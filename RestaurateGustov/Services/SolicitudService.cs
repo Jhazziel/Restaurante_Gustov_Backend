@@ -24,5 +24,10 @@ namespace RestaurateGustov.Services
             var solicitud = _dbContext.Solicitud.FirstOrDefault(p => p.SolicitudId == id);
             return solicitud;
         }
+        public async Task<IList<Solicitud>> GetSolicitudList(int id)
+        {
+            var solicitud = _dbContext.Solicitud.Where(p => p.SolicitudId == id);
+            return solicitud.ToList();
+        }
     }
 }

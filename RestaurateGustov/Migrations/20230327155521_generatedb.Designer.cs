@@ -12,8 +12,8 @@ using RestaurateGustov.DBContext;
 namespace RestaurateGustov.Migrations
 {
     [DbContext(typeof(RestauranteGustovDbContext))]
-    [Migration("20230327003836_generate")]
-    partial class generate
+    [Migration("20230327155521_generatedb")]
+    partial class generatedb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,14 +60,14 @@ namespace RestaurateGustov.Migrations
                     b.Property<int>("PersonaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RestauranteRestaurantId")
+                    b.Property<int>("RestaurantId")
                         .HasColumnType("int");
 
                     b.HasKey("EmpleadoId");
 
                     b.HasIndex("PersonaId");
 
-                    b.HasIndex("RestauranteRestaurantId");
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Empleado");
                 });
@@ -163,7 +163,7 @@ namespace RestaurateGustov.Migrations
 
                     b.HasKey("RestaurantId");
 
-                    b.ToTable("Restaurante");
+                    b.ToTable("Restaurant");
                 });
 
             modelBuilder.Entity("RestaurateGustov.Models.Solicitud", b =>
@@ -213,6 +213,8 @@ namespace RestaurateGustov.Migrations
 
                     b.HasKey("VacacionesId");
 
+                    b.HasIndex("SolicitudId");
+
                     b.ToTable("Vacaciones");
                 });
 
@@ -224,15 +226,15 @@ namespace RestaurateGustov.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RestaurateGustov.Models.Restaurant", "Restaurante")
+                    b.HasOne("RestaurateGustov.Models.Restaurant", "Restaurant")
                         .WithMany()
-                        .HasForeignKey("RestauranteRestaurantId")
+                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Persona");
 
-                    b.Navigation("Restaurante");
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("RestaurateGustov.Models.Persona", b =>
@@ -266,6 +268,17 @@ namespace RestaurateGustov.Migrations
                         .IsRequired();
 
                     b.Navigation("Empleado");
+                });
+
+            modelBuilder.Entity("RestaurateGustov.Models.Vacaciones", b =>
+                {
+                    b.HasOne("RestaurateGustov.Models.Solicitud", "Solicitud")
+                        .WithMany()
+                        .HasForeignKey("SolicitudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solicitud");
                 });
 #pragma warning restore 612, 618
         }

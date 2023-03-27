@@ -6,5 +6,6 @@ namespace RestaurateGustov.Services.Contracts
     {
         Task<Solicitud> GetSolicitud(int id);
         Task<Solicitud> CreateRecibo(Solicitud entity);
+        Task<IList<Solicitud>> GetSolicitudList(int id);
     }
 }
