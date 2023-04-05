@@ -1,4 +1,5 @@
-﻿using RestaurateGustov.DBContext;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurateGustov.DBContext;
 using RestaurateGustov.Models;
 using RestaurateGustov.Services.Contracts;
 
@@ -12,22 +13,64 @@ namespace RestaurateGustov.Services
             this._dbContext = dbContext;
         }
 
-        public async Task<Empleado> CreateEmpleado(Empleado entity)
+        public async Task<Empleado> AddEmpleadoAsync(Empleado empleado)
         {
-            await _dbContext.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            try
+            {
+                await _dbContext.Empleado.AddAsync(empleado);
+                await _dbContext.SaveChangesAsync();
+                return empleado;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
 
-        public async Task<Empleado> GetEmpleado(int id)
+        public async Task<Empleado> GetEmpleadoByIdAsync(int empleadoId)
         {
-            var Empleado = _dbContext.Empleado.FirstOrDefault(p => p.EmpleadoId == id);
-            return Empleado;
+            try
+            {
+                var empleado = await _dbContext.Empleado.Where(c => c.EmpleadoId == empleadoId).FirstOrDefaultAsync();
+
+                return empleado;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
-        public async Task<IList<Empleado>> GetEmpleadoList(int id)
+
+        public async Task<List<Empleado>> GetEmpleadosAsync()
         {
-            var Empleado = _dbContext.Empleado.Where(p => p.EmpleadoId == id);
-            return Empleado.ToList();
+            try
+            {
+                var empleados = await _dbContext.Empleado.ToListAsync();
+
+                return empleados;
+            }
+
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Empleado>> GetEmpleadosByRestaurantIdAsync(int restaurantId)
+        {
+            try
+            {
+                var empleado = await _dbContext.Empleado.Where(c => c.RestaurantId == restaurantId).ToListAsync();
+
+                return empleado;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
     }
 }

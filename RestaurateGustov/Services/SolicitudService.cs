@@ -1,4 +1,5 @@
-﻿using RestaurateGustov.DBContext;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurateGustov.DBContext;
 using RestaurateGustov.Models;
 using RestaurateGustov.Services.Contracts;
 
@@ -12,22 +13,64 @@ namespace RestaurateGustov.Services
             this._dbContext = dbContext;
         }
 
-        public async Task<Solicitud> CreateRecibo(Solicitud entity)
+        public async Task<Solicitud> AddSolicitudAsync(Solicitud solicitud)
         {
-            await _dbContext.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            try
+            {
+                await _dbContext.Solicitud.AddAsync(solicitud);
+                await _dbContext.SaveChangesAsync();
+                return solicitud;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
 
-        public async Task<Solicitud> GetSolicitud(int id)
+        public async Task<Solicitud> GetSolicitudByIdAsync(int solicitudId)
         {
-            var solicitud = _dbContext.Solicitud.FirstOrDefault(p => p.SolicitudId == id);
-            return solicitud;
+            try
+            {
+                var solicitud = await _dbContext.Solicitud.Where(d => d.SolicitudId == solicitudId).FirstOrDefaultAsync();
+
+                return solicitud;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
-        public async Task<IList<Solicitud>> GetSolicitudList(int id)
+
+        public async Task<List<Solicitud>> GetSolicitudesAsync()
         {
-            var solicitud = _dbContext.Solicitud.Where(p => p.SolicitudId == id);
-            return solicitud.ToList();
+            try
+            {
+                var solicitudes = await _dbContext.Solicitud.ToListAsync();
+
+                return solicitudes;
+            }
+
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Solicitud>> GetSolicitudesByEmpleadoId(int empleadoId)
+        {
+            try
+            {
+                var solicitudes = await _dbContext.Solicitud.Where(d => d.EmpleadoId == empleadoId).ToListAsync();
+
+                return solicitudes;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
     }
 }

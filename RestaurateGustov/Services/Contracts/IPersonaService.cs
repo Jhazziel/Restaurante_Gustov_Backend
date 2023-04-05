@@ -4,8 +4,8 @@ namespace RestaurateGustov.Services.Contracts
 {
     public interface IPersonaService
     {
-        Task<Persona> GetPersona(int id);
-        Task<Persona> CreatePersona(Persona entity);
-        Task<IList<Persona>> GetPersonaList(int id);
+        Task<List<Persona>> GetPersonasAsync();
+        Task<Persona> GetPersonaByIdAsync(int personaId);
+        Task<Persona> AddPersonaAsync(Persona persona);
     }
 }

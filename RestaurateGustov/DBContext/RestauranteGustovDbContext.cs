@@ -12,7 +12,7 @@ namespace RestaurateGustov.DBContext
         public DbSet<Recibo> Recibo { get; set; }
         public DbSet<Restaurant> Restaurant { get; set; }
         public DbSet<Solicitud> Solicitud { get; set; }
-        public DbSet<Vacaciones> Vacaciones { get; set; }
+        public DbSet<Vacacion> Vacacion { get; set; }
 
         public RestauranteGustovDbContext(DbContextOptions<RestauranteGustovDbContext> options): base(options) 
         { 

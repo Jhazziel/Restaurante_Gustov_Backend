@@ -5,21 +5,21 @@ using RestaurateGustov.Services.Contracts;
 
 namespace RestaurateGustov.Services
 {
-    public class PersonaService: IPersonaService
+    public class VacacionService : IVacacionService
     {
         private readonly RestauranteGustovDbContext _dbContext;
-        public PersonaService(RestauranteGustovDbContext dbContext)
+
+        public VacacionService(RestauranteGustovDbContext dbContext)
         {
             this._dbContext = dbContext;
         }
-
-        public async Task<Persona> AddPersonaAsync(Persona persona)
+        public async Task<Vacacion> AddVacacionAsync(Vacacion vacacion)
         {
             try
             {
-                await _dbContext.Persona.AddAsync(persona);
+                await _dbContext.Vacacion.AddAsync(vacacion);
                 await _dbContext.SaveChangesAsync();
-                return persona;
+                return vacacion;
             }
 
             catch
@@ -28,13 +28,13 @@ namespace RestaurateGustov.Services
             }
         }
 
-        public async Task<Persona> GetPersonaByIdAsync(int personaId)
+        public async Task<List<Vacacion>> GetVacacionesAsync()
         {
             try
             {
-                var persona = await _dbContext.Persona.Where(c => c.PersonaId == personaId).FirstOrDefaultAsync();
+                var vacaciones = await _dbContext.Vacacion.ToListAsync();
 
-                return persona;
+                return vacaciones;
             }
 
             catch
@@ -43,13 +43,13 @@ namespace RestaurateGustov.Services
             }
         }
 
-        public async Task<List<Persona>> GetPersonasAsync()
+        public async Task<Vacacion> GetVacacionByIdAsync(int vacacionId)
         {
             try
             {
-                var personas = await _dbContext.Persona.ToListAsync();
+                var vacacion = await _dbContext.Vacacion.Where(c => c.VacacionId == vacacionId).FirstOrDefaultAsync();
 
-                return personas;
+                return vacacion;
             }
 
             catch

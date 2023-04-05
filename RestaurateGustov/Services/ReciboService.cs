@@ -1,4 +1,5 @@
-﻿using RestaurateGustov.DBContext;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurateGustov.DBContext;
 using RestaurateGustov.Models;
 using RestaurateGustov.Services.Contracts;
 
@@ -10,18 +11,50 @@ namespace RestaurateGustov.Services
         public ReciboService(RestauranteGustovDbContext dbContext) { 
          this._dbContext = dbContext;
         }
-        public async Task<Recibo> CreateRecibo(Recibo entity)
+
+        public async Task<Recibo> AddReciboAsync(Recibo recibo)
         {
-            await _dbContext.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            try
+            {
+                await _dbContext.Recibo.AddAsync(recibo);
+                await _dbContext.SaveChangesAsync();
+                return recibo;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
 
-        public async Task<Recibo> GetRecibo(int id)
+        public async Task<Recibo> GetReciboByIdAsync(int reciboId)
         {
-            var recibo = _dbContext.Recibo.FirstOrDefault(p => p.ReciboId == id);
-            return recibo;
+            try
+            {
+                var recibo = await _dbContext.Recibo.Where(c => c.ReciboId == reciboId).FirstOrDefaultAsync();
 
+                return recibo;
+            }
+
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Recibo>> GetRecibosAsync()
+        {
+            try
+            {
+                var recibos = await _dbContext.Recibo.ToListAsync();
+
+                return recibos;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
     }
 }

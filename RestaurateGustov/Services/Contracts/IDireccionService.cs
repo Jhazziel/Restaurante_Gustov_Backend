@@ -4,8 +4,8 @@ namespace RestaurateGustov.Services.Contracts
 {
     public interface IDireccionService
     {
-        Task<Direccion> GetDireccion(int id);
-        Task<Direccion> CreateDireccion(Direccion entity);
-        Task<IList<Direccion>> GetDireccionList(int id);
+        Task<List<Direccion>> GetDireccionesAsync();
+        Task<Direccion> GetDireccionByIdAsync(int direccionId);
+        
     }
 }

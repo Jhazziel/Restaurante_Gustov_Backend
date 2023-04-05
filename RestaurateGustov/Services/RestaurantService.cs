@@ -1,4 +1,5 @@
-﻿using RestaurateGustov.DBContext;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurateGustov.DBContext;
 using RestaurateGustov.Models;
 using RestaurateGustov.Services.Contracts;
 
@@ -12,22 +13,34 @@ namespace RestaurateGustov.Services
             this._dbContext = dbContext;
         }
 
-        public async Task<Restaurant> CreateRestaurant(Restaurant entity)
+        public async Task<Restaurant> GetRestaurantByIdASync(int restaurantId)
         {
-            await _dbContext.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
+            try
+            {
+                var restaurant = await _dbContext.Restaurant.Where(c => c.RestaurantId == restaurantId).FirstOrDefaultAsync();
+
+                return restaurant;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
 
-        public async Task<Restaurant> GetRestaurant(int id)
+        public async Task<List<Restaurant>> GetRestaurantesAsync()
         {
-            var Restaurant = _dbContext.Restaurant.FirstOrDefault(p => p.RestaurantId == id);
-            return Restaurant;
-        }
-        public async Task<IList<Restaurant>> GetRestaurantList(int id)
-        {
-            var Restaurant = _dbContext.Restaurant.Where(p => p.RestaurantId == id);
-            return Restaurant.ToList();
+            try
+            {
+                var restaurantes = await _dbContext.Restaurant.ToListAsync();
+
+                return restaurantes;
+            }
+
+            catch
+            {
+                throw;
+            }
         }
     }
 }

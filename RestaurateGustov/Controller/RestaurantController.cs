@@ -1,23 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RestaurateGustov.Models;
+using RestaurateGustov.Services;
 using RestaurateGustov.Services.Contracts;
 
 namespace RestaurateGustov.Controller
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("api/Restaurant")]
-    public class RestaurantController
+    public class RestaurantController: ControllerBase
     {
-        private readonly IRestaurantService _restaurant;
+        private readonly IRestaurantService _restaurantService;
+
         public RestaurantController(IRestaurantService restaurantService)
         {
-            _restaurant = restaurantService;
+            this._restaurantService = restaurantService;
         }
 
-        [HttpGet("getRestaurant/{id}")]
-        public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
+        [HttpGet]
+        public async Task<ActionResult<List<Restaurant>>> GetRestaurantesAsync()
         {
-            return await _restaurant.GetRestaurant(id);
+            try
+            {
+                var restaurant = await _restaurantService.GetRestaurantesAsync();
+                return Ok(restaurant);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{restaurantId:int}")]
+        public async Task<ActionResult<Restaurant>> GetRestaurantByIdASync(int restaurantId)
+        {
+            try
+            {
+                var restaurant = await _restaurantService.GetRestaurantByIdASync(restaurantId);
+
+                if (restaurant != null) return Ok(restaurant);
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

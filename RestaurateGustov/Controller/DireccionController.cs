@@ -1,23 +1,49 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RestaurateGustov.Models;
 using RestaurateGustov.Services.Contracts;
 
 namespace RestaurateGustov.Controller
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("api/Direccion")]
-    public class DireccionController
+    public class DireccionController : ControllerBase
     {
-        private readonly IDireccionService _direccion;
+        private readonly IDireccionService _direccionService;
         public DireccionController(IDireccionService direccionService)
         {
-            _direccion = direccionService;
+            _direccionService = direccionService;
         }
 
-        [HttpGet("getDireccion/{id}")]
-        public async Task<ActionResult<Direccion>> GetDireccion(int id)
+        [HttpGet]
+        public async Task<ActionResult<Direccion>> GetDireccionesAsync()
         {
-            return await _direccion.GetDireccion(id);
+            try
+            {
+                var direcciones = await _direccionService.GetDireccionesAsync();
+                return Ok(direcciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{direccionId:int}")]
+        public async Task<ActionResult<Direccion>> GetDireccionByIdAsync(int direccionId)
+        {
+            try
+            {
+                var Direccion = await _direccionService.GetDireccionByIdAsync(direccionId);
+
+                if (Direccion != null) return Ok(Direccion);
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

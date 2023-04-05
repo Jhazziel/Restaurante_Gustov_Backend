@@ -4,8 +4,9 @@ namespace RestaurateGustov.Services.Contracts
 {
     public interface ISolicitudService
     {
-        Task<Solicitud> GetSolicitud(int id);
-        Task<Solicitud> CreateRecibo(Solicitud entity);
-        Task<IList<Solicitud>> GetSolicitudList(int id);
+        Task<List<Solicitud>> GetSolicitudesAsync();
+        Task<Solicitud> GetSolicitudByIdAsync(int solicitudId);
+        Task<Solicitud> AddSolicitudAsync(Solicitud solicitud);
+        Task<List<Solicitud>> GetSolicitudesByEmpleadoId(int empleadoId);
     }
 }

@@ -12,7 +12,7 @@ using RestaurateGustov.DBContext;
 namespace RestaurateGustov.Migrations
 {
     [DbContext(typeof(RestauranteGustovDbContext))]
-    [Migration("20230327155521_generatedb")]
+    [Migration("20230405005248_generatedb")]
     partial class generatedb
     {
         /// <inheritdoc />
@@ -81,7 +81,6 @@ namespace RestaurateGustov.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonaId"));
 
                     b.Property<string>("ApellidoMaterno")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ApellidoPaterno")
@@ -107,7 +106,6 @@ namespace RestaurateGustov.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoSangre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PersonaId");
@@ -128,12 +126,12 @@ namespace RestaurateGustov.Migrations
                     b.Property<DateTime>("FechaEmision")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("VacacionesId")
+                    b.Property<int>("VacacionId")
                         .HasColumnType("int");
 
                     b.HasKey("ReciboId");
 
-                    b.HasIndex("VacacionesId");
+                    b.HasIndex("VacacionId");
 
                     b.ToTable("Recibo");
                 });
@@ -194,13 +192,13 @@ namespace RestaurateGustov.Migrations
                     b.ToTable("Solicitud");
                 });
 
-            modelBuilder.Entity("RestaurateGustov.Models.Vacaciones", b =>
+            modelBuilder.Entity("RestaurateGustov.Models.Vacacion", b =>
                 {
-                    b.Property<int>("VacacionesId")
+                    b.Property<int>("VacacionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VacacionesId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VacacionId"));
 
                     b.Property<DateTime>("FechaFin")
                         .HasColumnType("datetime2");
@@ -211,11 +209,11 @@ namespace RestaurateGustov.Migrations
                     b.Property<int>("SolicitudId")
                         .HasColumnType("int");
 
-                    b.HasKey("VacacionesId");
+                    b.HasKey("VacacionId");
 
                     b.HasIndex("SolicitudId");
 
-                    b.ToTable("Vacaciones");
+                    b.ToTable("Vacacion");
                 });
 
             modelBuilder.Entity("RestaurateGustov.Models.Empleado", b =>
@@ -250,13 +248,13 @@ namespace RestaurateGustov.Migrations
 
             modelBuilder.Entity("RestaurateGustov.Models.Recibo", b =>
                 {
-                    b.HasOne("RestaurateGustov.Models.Vacaciones", "Vacaciones")
+                    b.HasOne("RestaurateGustov.Models.Vacacion", "Vacacion")
                         .WithMany()
-                        .HasForeignKey("VacacionesId")
+                        .HasForeignKey("VacacionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Vacaciones");
+                    b.Navigation("Vacacion");
                 });
 
             modelBuilder.Entity("RestaurateGustov.Models.Solicitud", b =>
@@ -270,7 +268,7 @@ namespace RestaurateGustov.Migrations
                     b.Navigation("Empleado");
                 });
 
-            modelBuilder.Entity("RestaurateGustov.Models.Vacaciones", b =>
+            modelBuilder.Entity("RestaurateGustov.Models.Vacacion", b =>
                 {
                     b.HasOne("RestaurateGustov.Models.Solicitud", "Solicitud")
                         .WithMany()

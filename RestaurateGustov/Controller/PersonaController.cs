@@ -1,23 +1,64 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RestaurateGustov.Models;
 using RestaurateGustov.Services.Contracts;
 
 namespace RestaurateGustov.Controller
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("api/Persona")]
-    public class PersonaController
+    public class PersonaController : ControllerBase
     {
-        private readonly IPersonaService _persona;
+        private readonly IPersonaService _personaService;
+
         public PersonaController(IPersonaService personaService)
         {
-            _persona = personaService;
+            this._personaService = personaService;
         }
 
-        [HttpGet("getPersona/{id}")]
-        public async Task<ActionResult<Persona>> GetPersona(int id)
+        [HttpGet]
+        public async Task<ActionResult<List<Persona>>> GetPersonasAsync()
         {
-            return await _persona.GetPersona(id);
+            try
+            {
+                var persona = await _personaService.GetPersonasAsync();
+                return Ok(persona);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{personaId:int}", Name = "GetPersona")]
+        public async Task<ActionResult<Persona>> GetPersonaByIdAsync(int personaId)
+        {
+            try
+            {
+                var persona = await _personaService.GetPersonaByIdAsync(personaId);
+
+                if (persona != null) return Ok(persona);
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Persona>> AddPersonaAsync(Persona persona)
+        {
+            try
+            {
+                var savedPersona = await _personaService.AddPersonaAsync(persona);
+                return CreatedAtRoute("GetPersona", new { savedPersona.PersonaId }, savedPersona);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

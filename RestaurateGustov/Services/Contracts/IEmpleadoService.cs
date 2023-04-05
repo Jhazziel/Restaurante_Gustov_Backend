@@ -4,8 +4,9 @@ namespace RestaurateGustov.Services.Contracts
 {
     public interface IEmpleadoService
     {
-        Task<Empleado> GetEmpleado(int id);
-        Task<Empleado> CreateEmpleado(Empleado entity);
-        Task<IList<Empleado>> GetEmpleadoList(int id);
+        Task<List<Empleado>> GetEmpleadosAsync();
+        Task<Empleado> GetEmpleadoByIdAsync(int empleadoId);
+        Task<Empleado> AddEmpleadoAsync(Empleado empleado);
+        Task<List<Empleado>> GetEmpleadosByRestaurantIdAsync(int restaurantId);
     }
 }

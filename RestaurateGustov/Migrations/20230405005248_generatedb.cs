@@ -17,7 +17,7 @@ namespace RestaurateGustov.Migrations
                 {
                     DireccionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ubicacion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Ubicacion = table.Column<string>(type: "varchar(155)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,10 +30,10 @@ namespace RestaurateGustov.Migrations
                 {
                     RestaurantId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "varchar(20)", nullable: false),
                     NIT = table.Column<int>(type: "int", nullable: false),
-                    PermisoFuncionamiento = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Direccion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PermisoFuncionamiento = table.Column<string>(type: "varchar(20)", nullable: false),
+                    Direccion = table.Column<string>(type: "varchar(155)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,13 +46,13 @@ namespace RestaurateGustov.Migrations
                 {
                     PersonaId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApellidoPaterno = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ApellidoMaterno = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "varchar(20)", nullable: false),
+                    ApellidoPaterno = table.Column<string>(type: "varchar(20)", nullable: false),
+                    ApellidoMaterno = table.Column<string>(type: "varchar(20)", nullable: true),
                     CI = table.Column<int>(type: "int", nullable: false),
-                    Expedido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TipoSangre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nacionalidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Expedido = table.Column<string>(type: "varchar(5)", nullable: false),
+                    TipoSangre = table.Column<string>(type: "varchar(5)", nullable: true),
+                    Nacionalidad = table.Column<string>(type: "varchar(20)", nullable: false),
                     DireccionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -72,8 +72,8 @@ namespace RestaurateGustov.Migrations
                 {
                     EmpleadoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Cargo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaIngreso = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Cargo = table.Column<string>(type: "varchar(20)", nullable: false),
+                    FechaIngreso = table.Column<DateTime>(type: "datetime", nullable: false),
                     PersonaId = table.Column<int>(type: "int", nullable: false),
                     RestaurantId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -100,8 +100,8 @@ namespace RestaurateGustov.Migrations
                 {
                     SolicitudId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Razon = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaSolicitud = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Razon = table.Column<string>(type: "varchar(155)", nullable: false),
+                    FechaSolicitud = table.Column<DateTime>(type: "datetime", nullable: false),
                     Confirmacion = table.Column<bool>(type: "bit", nullable: false),
                     EmpleadoId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -117,20 +117,20 @@ namespace RestaurateGustov.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vacaciones",
+                name: "Vacacion",
                 columns: table => new
                 {
-                    VacacionesId = table.Column<int>(type: "int", nullable: false)
+                    VacacionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaInicio = table.Column<DateTime>(type: "datetime", nullable: false),
+                    FechaFin = table.Column<DateTime>(type: "datetime", nullable: false),
                     SolicitudId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vacaciones", x => x.VacacionesId);
+                    table.PrimaryKey("PK_Vacacion", x => x.VacacionId);
                     table.ForeignKey(
-                        name: "FK_Vacaciones_Solicitud_SolicitudId",
+                        name: "FK_Vacacion_Solicitud_SolicitudId",
                         column: x => x.SolicitudId,
                         principalTable: "Solicitud",
                         principalColumn: "SolicitudId",
@@ -143,17 +143,17 @@ namespace RestaurateGustov.Migrations
                 {
                     ReciboId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FechaEmision = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VacacionesId = table.Column<int>(type: "int", nullable: false)
+                    FechaEmision = table.Column<DateTime>(type: "datetime", nullable: false),
+                    VacacionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Recibo", x => x.ReciboId);
                     table.ForeignKey(
-                        name: "FK_Recibo_Vacaciones_VacacionesId",
-                        column: x => x.VacacionesId,
-                        principalTable: "Vacaciones",
-                        principalColumn: "VacacionesId",
+                        name: "FK_Recibo_Vacacion_VacacionId",
+                        column: x => x.VacacionId,
+                        principalTable: "Vacacion",
+                        principalColumn: "VacacionId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -173,9 +173,9 @@ namespace RestaurateGustov.Migrations
                 column: "DireccionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recibo_VacacionesId",
+                name: "IX_Recibo_VacacionId",
                 table: "Recibo",
-                column: "VacacionesId");
+                column: "VacacionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Solicitud_EmpleadoId",
@@ -183,8 +183,8 @@ namespace RestaurateGustov.Migrations
                 column: "EmpleadoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vacaciones_SolicitudId",
-                table: "Vacaciones",
+                name: "IX_Vacacion_SolicitudId",
+                table: "Vacacion",
                 column: "SolicitudId");
         }
 
@@ -195,7 +195,7 @@ namespace RestaurateGustov.Migrations
                 name: "Recibo");
 
             migrationBuilder.DropTable(
-                name: "Vacaciones");
+                name: "Vacacion");
 
             migrationBuilder.DropTable(
                 name: "Solicitud");

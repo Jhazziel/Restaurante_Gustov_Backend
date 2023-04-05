@@ -4,7 +4,8 @@
     {
         public int ReciboId { get; set; }
         public DateTime FechaEmision { get; set; }
-        public Vacaciones Vacaciones { get; set; }
+        public int VacacionId { get; set; }
+        public Vacacion? Vacacion { get; set; }
 
     }
 }

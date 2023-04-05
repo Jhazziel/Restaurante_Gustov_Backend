@@ -4,7 +4,8 @@ namespace RestaurateGustov.Services.Contracts
 {
     public interface IReciboService
     {
-        Task<Recibo> GetRecibo(int id);
-        Task<Recibo> CreateRecibo(Recibo entity);
+        Task<List<Recibo>> GetRecibosAsync();
+        Task<Recibo> GetReciboByIdAsync(int reciboId);
+        Task<Recibo> AddReciboAsync(Recibo recibo);
     }
 }
